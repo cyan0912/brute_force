@@ -1,0 +1,88 @@
+from itertools import combinations
+from datetime import datetime
+# startTime = datetime.now()
+
+    
+def bruteForceKnapsack(pathIn, pathOut):
+    W = 0
+    m = 1
+    ListW = []
+    ListV = []
+    ListC = []
+    ListI = []
+
+    #get data from file
+    with open(pathIn) as f:
+        W = int(f.readline())
+        m = int(f.readline())
+        ListW = f.readline().split(", ")
+        ListV = f.readline().split(", ")
+        ListC = f.readline().split(", ")
+    
+    for i in range(0,len(ListW)):
+        ListI.append(i)
+    for i in range(len(ListW)):
+        if int(ListW[i])> W:
+            ListW.remove(i)
+    
+    subsets = []
+
+    #create subsets list of listI
+    for i in range(len(ListI)+1):
+        subsets += [list(j) for j in combinations(ListI,i)]
+
+    #find legal subsets with condition sum of weight less than or equal and at least one item from each class
+    legalSubset = []
+    for subset in subsets:
+        totalW = 0
+        totalC = []
+        for i in subset:
+            totalW += int(ListW[i])
+            if (ListC[i] not in totalC):
+                totalC.append(ListC[i])
+        if totalW <= W and len(totalC)==m:
+            legalSubset.append(subset)
+
+    #find max value in legal subsets
+    maxVIndex = -1
+    maxV = -1
+    for subset in legalSubset:
+        totalV = 0
+        for i in subset:
+            totalV += int(ListV[i])
+        if totalV > maxV:
+            maxV = totalV
+            maxVIndex = subsets.index(subset)
+
+    result = []
+    for i in range(0,len(ListW)):
+        result.append(0)
+    for i in subsets[maxVIndex]:
+        result[i]=1
+
+    #return results to txt file
+    with open(pathOut,"w") as fp:
+        print("Result: ")
+        if maxV == -1:
+            fp.write("No solution.")
+        else:
+            fp.write(str(maxV))
+            fp.write("\n")
+            resultList = ", ".join(map(str,result))
+            fp.write(resultList)
+
+
+if __name__=="__main__":
+    for i in range(1,6):
+        pathIn = "smallInput/INPUT_" + str(i) + ".txt" 
+        pathOut = "smallOutput1/OUTPUT_" + str(i) + ".txt"
+        bruteForceKnapsack(pathIn,pathOut)   
+    
+
+# for i in range(1,6):
+#     pathIn = "largeInput/INPUT_" + str(i) + ".txt" 
+#     pathOut = "largeOutput/OUTPUT_" + str(i) + ".txt"
+#     bruteForceKnapsack(pathIn,pathOut)   
+
+
+# print(datetime.now() - startTime)
