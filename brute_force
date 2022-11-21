@@ -2,7 +2,6 @@ from itertools import combinations
 from datetime import datetime
 # startTime = datetime.now()
 
-    
 def bruteForceKnapsack(pathIn, pathOut):
     W = 0
     m = 1
@@ -71,18 +70,17 @@ def bruteForceKnapsack(pathIn, pathOut):
             resultList = ", ".join(map(str,result))
             fp.write(resultList)
 
-
 if __name__=="__main__":
+    #run with small data
     for i in range(1,6):
         pathIn = "smallInput/INPUT_" + str(i) + ".txt" 
         pathOut = "smallOutput1/OUTPUT_" + str(i) + ".txt"
         bruteForceKnapsack(pathIn,pathOut)   
     
-
-# for i in range(1,6):
-#     pathIn = "largeInput/INPUT_" + str(i) + ".txt" 
-#     pathOut = "largeOutput/OUTPUT_" + str(i) + ".txt"
-#     bruteForceKnapsack(pathIn,pathOut)   
-
+    #run with big data
+    # for i in range(1,6):
+    #     pathIn = "largeInput/INPUT_" + str(i) + ".txt" 
+    #     pathOut = "largeOutput/OUTPUT_" + str(i) + ".txt"
+    #     bruteForceKnapsack(pathIn,pathOut)   
 
 # print(datetime.now() - startTime)
